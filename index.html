@@ -90,6 +90,16 @@
       .alt-layout .image-section {
         order: -1;
       }
+      /* Centrage des images sur mobile */
+      .image-section {
+        display: flex;
+        justify-content: center;
+      }
+      .image-section img {
+        max-width: 90%;
+        margin: 0 auto;
+        pointer-events: none;
+      }
     }
     nav ul li a {
       font-weight: 600;
