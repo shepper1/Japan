@@ -168,13 +168,30 @@
     border-radius: 9999px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
     z-index: 50;
-    transition: all 0.3s ease;
+    opacity: 0;
+    transition: opacity 0.4s ease, transform 0.3s ease;
   }
 
   .floating-top-button:hover {
     background-color: #4338ca;
     transform: scale(1.1);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+  }
+
+  .floating-top-button.visible {
+    opacity: 1;
+  }
+
+  @media (max-width: 640px) {
+    .floating-top-button {
+      font-size: 1rem;
+      padding: 0.4rem 0.6rem;
+    }
+
+    .floating-top-button svg {
+      width: 1.25rem;
+      height: 1.25rem;
+    }
   }
 
   </style>
@@ -756,11 +773,26 @@
     </section>
   </div>
 </body>
-</body>
-  <a href="#top" class="floating-top-button" aria-label="Retour en haut" title="Remonter en haut">
-    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
-    </svg>
-  </a>
-</html>
+  <div id="backToTopWrapper" style="display: none;">
+    <a href="#top" class="floating-top-button" aria-label="Retour en haut" title="Remonter en haut">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+      </svg>
+    </a>
+  </div>
+  <script>
+    document.addEventListener("scroll", function () {
+      const trigger = document.querySelector("nav");
+      const buttonWrapper = document.getElementById("backToTopWrapper");
+      if (!trigger || !buttonWrapper) return;
+      const offset = trigger.getBoundingClientRect().bottom;
+      // Affichage du wrapper toujours (pour garder le flux), gestion via classe visible/opacité
+      buttonWrapper.style.display = "block";
+      if (offset < 0) {
+        buttonWrapper.firstElementChild.classList.add("visible");
+      } else {
+        buttonWrapper.firstElementChild.classList.remove("visible");
+      }
+    });
+  </script>
 </html>
