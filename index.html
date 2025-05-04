@@ -160,6 +160,7 @@
   .floating-top-button {
     position: fixed;
     bottom: 1.5rem;
+    left: auto;
     right: 1rem;
     background-color: #4f46e5;
     color: white;
@@ -168,24 +169,26 @@
     border-radius: 9999px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
     z-index: 50;
-    opacity: 0;
+    opacity: 0.5;
     transition: opacity 0.4s ease, transform 0.3s ease;
   }
 
   .floating-top-button:hover {
     background-color: #4338ca;
+    opacity: 0.9;
     transform: scale(1.1);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
   }
 
   .floating-top-button.visible {
-    opacity: 1;
+    opacity: 0.8;
   }
 
   @media (max-width: 640px) {
     .floating-top-button {
       font-size: 0.9rem;
       padding: 0.3rem 0.5rem;
+      bottom: 1rem;
     }
 
     .floating-top-button svg {
@@ -786,17 +789,24 @@
     </a>
   </div>
   <script>
+    let scrollTimeout;
     document.addEventListener("scroll", function () {
       const trigger = document.querySelector("nav");
       const buttonWrapper = document.getElementById("backToTopWrapper");
       if (!trigger || !buttonWrapper) return;
       const offset = trigger.getBoundingClientRect().bottom;
-      // Affichage du wrapper toujours (pour garder le flux), gestion via classe visible/opacité
-      buttonWrapper.style.display = "block";
+      const btn = buttonWrapper.firstElementChild;
+
       if (offset < 0) {
-        buttonWrapper.firstElementChild.classList.add("visible");
+        buttonWrapper.style.display = "block";
+        btn.classList.add("visible");
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+          btn.classList.remove("visible");
+        }, 5000);
       } else {
-        buttonWrapper.firstElementChild.classList.remove("visible");
+        btn.classList.remove("visible");
+        buttonWrapper.style.display = "none";
       }
     });
   </script>
